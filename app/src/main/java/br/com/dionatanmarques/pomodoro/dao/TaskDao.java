@@ -58,10 +58,17 @@ public class TaskDao {
 
         if (cursor.moveToFirst()) {
             do {
-                Task task = new Task(cursor.getString(1), cursor.getString(2), cursor.getInt(3));
+                Task task = new Task(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3));
                 tasks.add(task);
             } while (cursor.moveToNext());
         }
         return  tasks;
+    }
+
+    public void delete(int rowId) {
+        SQLiteDatabase database = dbPomodoroHelper.getWritableDatabase();
+        String selection = COLUMN_NAME_ID + " LIKE ?";
+        String[] selectionArgs = { String.valueOf(rowId) };
+        database.delete(TABLE_NAME, selection, selectionArgs);
     }
 }

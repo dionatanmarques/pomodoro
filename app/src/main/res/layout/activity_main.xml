@@ -30,7 +30,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_add_white_24dp"
-        android:onClick="newTask"
-        app:layout_behavior="br.com.dionatanmarques.pomodoro.component.FloatActionButtonHideScroll"/>
+        android:onClick="newTask"/>
+        //app:layout_behavior="br.com.dionatanmarques.pomodoro.component.FloatActionButtonHideScroll"
 
 </android.support.design.widget.CoordinatorLayout>
