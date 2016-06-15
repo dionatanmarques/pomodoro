@@ -24,8 +24,13 @@
             android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity"/>
+                android:value=".activity.MainActivity" />
         </activity>
+
+        <service
+            android:name=".service.TimeService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
