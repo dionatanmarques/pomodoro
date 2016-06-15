@@ -1,5 +1,6 @@
 package br.com.dionatanmarques.pomodoro.adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import br.com.dionatanmarques.pomodoro.R;
 import br.com.dionatanmarques.pomodoro.activity.MainActivity;
+import br.com.dionatanmarques.pomodoro.activity.NewTaskActivity;
 import br.com.dionatanmarques.pomodoro.dao.TaskDao;
 import br.com.dionatanmarques.pomodoro.entity.Task;
 
@@ -47,6 +49,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         private TextView description;
         private TextView pomodoro;
         private Button btnDelete;
+        private Button btnEdit;
 
         public TaskViewHolder(View itemView) {
             super(itemView);
@@ -54,6 +57,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             description = (TextView) itemView.findViewById(R.id.taskDescription);
             pomodoro = (TextView) itemView.findViewById(R.id.taskPomodoro);
             btnDelete = (Button) itemView.findViewById(R.id.btnDelete);
+            btnEdit = (Button) itemView.findViewById(R.id.btnEdit);
 
             btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -64,6 +68,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     tasks.remove(task);
                     notifyItemRemoved(getAdapterPosition());
                     notifyItemRangeChanged(getAdapterPosition(), tasks.size());
+                }
+            });
+
+            btnEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Task task = tasks.get(getAdapterPosition());
+                    Intent intent = new Intent(v.getContext(), NewTaskActivity.class);
+                    intent.putExtra("id", task.getId());
+                    v.getContext().startActivity(intent);
                 }
             });
         }

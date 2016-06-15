@@ -35,13 +35,37 @@ public class TaskDao {
         this.dbPomodoroHelper = new DBPomodoroHelper(context);
     }
 
-    public long insert(Task task) {
+    public long save(Task task) {
         SQLiteDatabase database = dbPomodoroHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME_TITLE, task.getTitle());
         values.put(COLUMN_NAME_DESCRIPTION, task.getDescription());
         values.put(COLUMN_NAME_POMODORO, task.getPomodoro());
-        return database.insert(TABLE_NAME, null, values);
+        if (task.getId() == null) {
+            return database.insert(TABLE_NAME, null, values);
+        }
+        String selection = COLUMN_NAME_ID + " LIKE ?";
+        String[] selectionArgs = { String.valueOf(task.getId()) };
+        return database.update(TABLE_NAME, values, selection, selectionArgs);
+    }
+
+    public Task findById(int id) {
+        SQLiteDatabase database = dbPomodoroHelper.getWritableDatabase();
+        String[] projection = {
+                COLUMN_NAME_ID,
+                COLUMN_NAME_TITLE,
+                COLUMN_NAME_DESCRIPTION,
+                COLUMN_NAME_POMODORO
+        };
+        String selection = COLUMN_NAME_ID + " = ?";
+        String[] selectionArgs = { String.valueOf(id) };
+        Cursor cursor = database.query(TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            Task task = new Task(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3));
+            return task;
+        }
+        return null;
     }
 
     public List<Task> findAll() {
@@ -67,7 +91,7 @@ public class TaskDao {
 
     public void delete(int rowId) {
         SQLiteDatabase database = dbPomodoroHelper.getWritableDatabase();
-        String selection = COLUMN_NAME_ID + " LIKE ?";
+        String selection = COLUMN_NAME_ID + " = ?";
         String[] selectionArgs = { String.valueOf(rowId) };
         database.delete(TABLE_NAME, selection, selectionArgs);
     }

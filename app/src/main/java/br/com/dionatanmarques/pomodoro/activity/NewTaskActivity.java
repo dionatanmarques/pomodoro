@@ -17,6 +17,7 @@ public class NewTaskActivity extends AppCompatActivity {
     private TextView tfTaskDescription;
     private TextView tfTaskPomodoro;
     private TaskDao taskDao;
+    private Task task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,19 @@ public class NewTaskActivity extends AppCompatActivity {
         tfTaskTitle = (TextView) findViewById(R.id.tfTaskTitle);
         tfTaskDescription = (TextView) findViewById(R.id.tfTaskDescription);
         tfTaskPomodoro = (TextView) findViewById(R.id.tfTaskPomodoro);
+
+        int id = getIntent().getIntExtra("id", 0);
+
+        if (id == 0) {
+            task = new Task();
+        } else {
+            task = taskDao.findById(id);
+            if (task != null) {
+                tfTaskTitle.setText(task.getTitle());
+                tfTaskDescription.setText(task.getDescription());
+                tfTaskPomodoro.setText(String.valueOf(task.getPomodoro()));
+            }
+        }
     }
 
     public void newTask(View v) {
@@ -47,8 +61,10 @@ public class NewTaskActivity extends AppCompatActivity {
         } else if (!pomodoro.matches("\\d+(?:\\.\\d+)?")) {
             Toast.makeText(this, "The pomodoro task must be a number", Toast.LENGTH_SHORT).show();
         } else {
-            Task task = new Task(title, description, Integer.parseInt(pomodoro));
-            taskDao.insert(task);
+            task.setTitle(title);
+            task.setDescription(description);
+            task.setPomodoro(Integer.parseInt(pomodoro));
+            taskDao.save(task);
             finish();
         }
     }
