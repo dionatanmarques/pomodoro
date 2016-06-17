@@ -30,7 +30,10 @@
         <service
             android:name=".service.TimeService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity android:name=".activity.CounterActivity"
+            android:label="@string/title_activity_counter" />
     </application>
 
 </manifest>

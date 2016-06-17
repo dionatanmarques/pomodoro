@@ -12,6 +12,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import br.com.dionatanmarques.pomodoro.R;
+import br.com.dionatanmarques.pomodoro.activity.CounterActivity;
 import br.com.dionatanmarques.pomodoro.activity.MainActivity;
 import br.com.dionatanmarques.pomodoro.activity.NewTaskActivity;
 import br.com.dionatanmarques.pomodoro.dao.TaskDao;
@@ -50,6 +51,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         private TextView pomodoro;
         private Button btnDelete;
         private Button btnEdit;
+        private Button btnPlay;
 
         public TaskViewHolder(View itemView) {
             super(itemView);
@@ -58,6 +60,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             pomodoro = (TextView) itemView.findViewById(R.id.taskPomodoro);
             btnDelete = (Button) itemView.findViewById(R.id.btnDelete);
             btnEdit = (Button) itemView.findViewById(R.id.btnEdit);
+            btnPlay = (Button) itemView.findViewById(R.id.btnPlay);
 
             btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -76,6 +79,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 public void onClick(View v) {
                     Task task = tasks.get(getAdapterPosition());
                     Intent intent = new Intent(v.getContext(), NewTaskActivity.class);
+                    intent.putExtra("id", task.getId());
+                    v.getContext().startActivity(intent);
+                }
+            });
+
+            btnPlay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Task task = tasks.get(getAdapterPosition());
+                    Intent intent = new Intent(v.getContext(), CounterActivity.class);
                     intent.putExtra("id", task.getId());
                     v.getContext().startActivity(intent);
                 }
