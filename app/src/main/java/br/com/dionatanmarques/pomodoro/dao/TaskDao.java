@@ -90,8 +90,9 @@ public class TaskDao {
                 COLUMN_NAME_POMODORO,
                 COLUMN_NAME_STATUS
         };
+        String sortOrder = COLUMN_NAME_STATUS;
 
-        Cursor cursor = database.query(TABLE_NAME, projection, null, null, null, null, null);
+        Cursor cursor = database.query(TABLE_NAME, projection, null, null, null, null, sortOrder);
         List<Task> tasks = new ArrayList<>();
 
         if (cursor.moveToFirst()) {
