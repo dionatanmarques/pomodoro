@@ -69,7 +69,7 @@ public class TimeService extends Service implements ServiceNotifier {
                             Intent intent = new Intent("ALARM_POMODORO");
                             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, PENDING_INTENT_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                            alarmManager.set(AlarmManager.RTC_WAKEUP, 1000, pendingIntent);
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, 0, pendingIntent);
                             stop();
                         } else {
                             try {
