@@ -73,7 +73,7 @@ public class CounterActivity extends AppCompatActivity {
             mService = binder.getService();
             mBound = true;
             mService.add(listenValue);
-            mService.startTimer();
+            mService.startTimer(CounterActivity.this);
         }
 
         @Override

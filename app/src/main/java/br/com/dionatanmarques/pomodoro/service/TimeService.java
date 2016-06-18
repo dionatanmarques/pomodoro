@@ -1,14 +1,20 @@
 package br.com.dionatanmarques.pomodoro.service;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.provider.AlarmClock;
+import android.provider.Settings;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import br.com.dionatanmarques.pomodoro.activity.CounterActivity;
 import br.com.dionatanmarques.pomodoro.observer.ListenValue;
 import br.com.dionatanmarques.pomodoro.observer.ServiceNotifier;
 
@@ -19,6 +25,7 @@ public class TimeService extends Service implements ServiceNotifier {
     private Calendar calendar = Calendar.getInstance();
     private DateFormat dateFormat = new SimpleDateFormat("mm:ss");
     private ListenValue listenValue;
+    private static final int PENDING_INTENT_ID = 1;
 
     public TimeService() {
         this.binder = new LocalBinder();
@@ -47,10 +54,10 @@ public class TimeService extends Service implements ServiceNotifier {
         }
     }
 
-    public void startTimer() {
+    public void startTimer(final Context context) {
         if (!started) {
-            calendar.set(Calendar.MINUTE, 25);
-            calendar.set(Calendar.SECOND, 00);
+            calendar.set(Calendar.MINUTE, 00);
+            calendar.set(Calendar.SECOND, 10);
             started = true;
             new Thread(new Runnable() {
                 @Override
@@ -59,6 +66,10 @@ public class TimeService extends Service implements ServiceNotifier {
                         String timeText = getTimeText();
                         notifyValue(timeText);
                         if (itsOver(timeText)) {
+                            Intent intent = new Intent("ALARM_POMODORO");
+                            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, PENDING_INTENT_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, 1000, pendingIntent);
                             stop();
                         } else {
                             try {

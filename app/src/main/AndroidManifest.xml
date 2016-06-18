@@ -32,8 +32,19 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".activity.CounterActivity"
+        <activity
+            android:name=".activity.CounterActivity"
             android:label="@string/title_activity_counter" />
+
+        <receiver
+            android:name=".receiver.BroadcastPomodoroReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="ALARM_POMODORO" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
