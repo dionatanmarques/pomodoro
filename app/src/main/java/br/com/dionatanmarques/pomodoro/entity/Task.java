@@ -5,15 +5,17 @@ public class Task {
     private String title;
     private String description;
     private Integer pomodoro;
+    private Integer status;
 
     public Task() {
     }
 
-    public Task(Integer id, String title, String description, Integer pomodoro) {
+    public Task(Integer id, String title, String description, Integer pomodoro, Integer status) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.pomodoro = pomodoro;
+        this.status = status;
     }
 
     public Task(String title, String description, Integer pomodoro) {
@@ -52,5 +54,13 @@ public class Task {
 
     public void setPomodoro(Integer pomodoro) {
         this.pomodoro = pomodoro;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

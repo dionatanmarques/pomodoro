@@ -32,7 +32,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@android:color/holo_green_dark"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:onClick="done" />
 
     <TextView
         android:layout_width="wrap_content"

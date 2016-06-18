@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import br.com.dionatanmarques.pomodoro.R;
@@ -24,6 +25,7 @@ public class CounterActivity extends AppCompatActivity {
     private TimeService mService;
     private boolean mBound;
     private ListenValue listenValue;
+    private Task task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class CounterActivity extends AppCompatActivity {
         int id = getIntent().getIntExtra("id", 0);
 
         if (id > 0) {
-            Task task = taskDao.findById(id);
+            task = taskDao.findById(id);
             if (task != null) {
                 tfTaskTitle.setText(task.getTitle());
                 tfTaskDescription.setText(task.getDescription());
@@ -81,4 +83,10 @@ public class CounterActivity extends AppCompatActivity {
             mBound = false;
         }
     };
+
+    public void done(View view) {
+        taskDao.done(task.getId());
+        onStop();
+        finish();
+    }
 }

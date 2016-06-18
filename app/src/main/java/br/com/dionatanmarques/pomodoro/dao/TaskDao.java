@@ -17,13 +17,15 @@ public class TaskDao {
     public static final String COLUMN_NAME_TITLE = "title";
     public static final String COLUMN_NAME_DESCRIPTION = "description";
     public static final String COLUMN_NAME_POMODORO = "pomodoro";
+    public static final String COLUMN_NAME_STATUS = "status";
 
     public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     COLUMN_NAME_ID + " INTEGER NOT NULL PRIMARY KEY," +
                     COLUMN_NAME_TITLE + " TEXT NOT NULL," +
                     COLUMN_NAME_DESCRIPTION + " TEXT NOT NULL," +
-                    COLUMN_NAME_POMODORO + " INTEGER NOT NULL" +
+                    COLUMN_NAME_POMODORO + " INTEGER NOT NULL," +
+                    COLUMN_NAME_STATUS + " INTEGER NOT NULL DEFAULT 0" +
                     ")";
 
     public static final String SQL_DELETE_ENTRIES =
@@ -55,17 +57,28 @@ public class TaskDao {
                 COLUMN_NAME_ID,
                 COLUMN_NAME_TITLE,
                 COLUMN_NAME_DESCRIPTION,
-                COLUMN_NAME_POMODORO
+                COLUMN_NAME_POMODORO,
+                COLUMN_NAME_STATUS
         };
         String selection = COLUMN_NAME_ID + " = ?";
         String[] selectionArgs = { String.valueOf(id) };
         Cursor cursor = database.query(TABLE_NAME, projection, selection, selectionArgs, null, null, null);
 
         if (cursor.moveToFirst()) {
-            Task task = new Task(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3));
+            Task task = new Task(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getInt(4));
             return task;
         }
         return null;
+    }
+
+    public void done(int id) {
+        SQLiteDatabase database = dbPomodoroHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME_STATUS, 1);
+        String selection = COLUMN_NAME_ID + " LIKE ?";
+        String[] selectionArgs = { String.valueOf(id) };
+        database.update(TABLE_NAME, values, selection, selectionArgs);
+
     }
 
     public List<Task> findAll() {
@@ -74,7 +87,8 @@ public class TaskDao {
                 COLUMN_NAME_ID,
                 COLUMN_NAME_TITLE,
                 COLUMN_NAME_DESCRIPTION,
-                COLUMN_NAME_POMODORO
+                COLUMN_NAME_POMODORO,
+                COLUMN_NAME_STATUS
         };
 
         Cursor cursor = database.query(TABLE_NAME, projection, null, null, null, null, null);
@@ -82,7 +96,7 @@ public class TaskDao {
 
         if (cursor.moveToFirst()) {
             do {
-                Task task = new Task(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3));
+                Task task = new Task(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getInt(4));
                 tasks.add(task);
             } while (cursor.moveToNext());
         }

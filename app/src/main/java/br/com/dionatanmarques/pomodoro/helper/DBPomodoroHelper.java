@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import br.com.dionatanmarques.pomodoro.dao.TaskDao;
 
 public class DBPomodoroHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "pomodoro.db";
 
     public DBPomodoroHelper(Context context) {
